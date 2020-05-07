@@ -8,16 +8,12 @@ const PlayBoard: React.FC = (): JSX.Element => {
   const gameStateIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   let [xIsNext, setXIsNext] = useState(true);
   let [gameState, setGameState] = useState(Array(9).fill(null));
-  let [history, setHistory] = useState<string[]>([]);
-  let [winner, setWinner] = useState<null|string>(null);
+  let [winner, setWinner] = useState<null | string>(null);
   let [isDraw, setIsDraw] = useState(false);
 
   const onCellClick = (index: number) => {
     //get current state of cells
     let currentGameState = gameState.slice();
-
-    //current state of history
-    let lastMove = history;
 
     //stop the game if board contains winning combination
 
@@ -33,37 +29,38 @@ const PlayBoard: React.FC = (): JSX.Element => {
     //mark the box either "X" or "O"
     currentGameState[index] = xIsNext ? "X" : "O";
 
-    //add the move to history
-    lastMove.push(xIsNext ? "X" : "O");
-
     setGameState(currentGameState);
-    setHistory(lastMove);
+
     setXIsNext(!xIsNext);
   };
 
   const handleBoardRestart = () => {
     setGameState(Array(9).fill(""));
-    setHistory([]);
     setXIsNext(true);
     setWinner(null);
     setIsDraw(false);
   };
 
- 
-  const nextPlayerTurn = () => {
-      if(xIsNext === true && isDraw === false && winner === null){
-          return  "Next player: X"
-      }else if (xIsNext === false && isDraw === false && winner === null){
-        return "Next player: O"
-      }else {
-          return 
-      }
-  }
+  const nextPlayerTurn = (): JSX.Element => {
+    if (xIsNext === true && isDraw === false && winner === null) {
+      return <div>Next player : X</div>;
+    } else if (xIsNext === false && isDraw === false && winner === null) {
+      return <div>Next player : O</div>;
+    } else if (
+      (xIsNext === false || xIsNext === true) &&
+      isDraw === false &&
+      winner !== null
+    ) {
+      return <div>Winner : {winner}</div>;
+    } else if (xIsNext === true && isDraw === true && winner === null) {
+      return <div>Tie!!</div>;
+    } else {
+      return <div></div>;
+    }
+  };
   //array of winning combination
 
-  
   const findWinner = (gameState: string[]) => {
-    
     const winLocations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -118,23 +115,13 @@ const PlayBoard: React.FC = (): JSX.Element => {
     }
   }, [gameState]);
 
-  useEffect(()=>{
+  useEffect(() => {
     handleBoardRestart();
-  },[])
+  }, []);
 
-  const MatchStatus = (winner: string|null, isDraw: boolean) => {
-    if (winner !== null && isDraw === false) {
-      return <div>`Winner is {winner}`</div>;
-    } else if (isDraw === true && winner === null) {
-      return <div>It's a Tie</div>;
-    } else {
-      return <div></div>;
-    }
-  };
-  
   return (
     <div className="Playboard">
-      <div>{nextPlayerTurn()}</div>
+      <div className="game-status">{nextPlayerTurn()}</div>
       <Row
         gameState={gameState.slice(0, 3)}
         onCellClick={onCellClick}
@@ -150,7 +137,7 @@ const PlayBoard: React.FC = (): JSX.Element => {
         onCellClick={onCellClick}
         gameStateIndexes={gameStateIndexes.slice(6, 9)}
       />
-      <div>{MatchStatus(winner,isDraw)}</div>
+
       <div className="reset" onClick={handleBoardRestart}>
         RESTART GAME
       </div>

@@ -1,22 +1,34 @@
-.cell{
-   width: 48px;
-   height: 48px; 
-   background-color: red;
-   border: 1px solid black;
+.cell {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  //background-color: red;
 }
 
-.bordered-cell{
-    
-    border-bottom: 8px solid #0DA192;
+.right-bottom-bordered {
+  border-right: 8px solid #0da192;
+  border-bottom: 8px solid #0da192;
 }
 
-.no-border-right-cell{
-    
-    border-bottom: 8px solid #0DA192;
-
+.right-bordered {
+  border-right: 8px solid #0da192;
 }
 
-.no-border-bottom-cell{
-   
-    border-right: 8px solid #0DA192;
+.bottom-bordered {
+  border-bottom: 8px solid #0da192;
+}
+
+.cell-value {
+  color: white;
+  font-size: large;
+  font-weight: 500;
+}
+
+.game-status {
+  text-align: center;
+  padding:  10px 10px 20px 10px;
+  color: white;
 }
